@@ -2,7 +2,11 @@
 
     <table class="table table-bordered">
         <tr *ngFor='let row of rows'>
-            <td *ngFor='let date of dates' scope="col" (click)=onCell(date)>{{date}}</td>
+            <tbody *ngFor='let date of dates'>
+                <td *ngIf='date/7<=row && date/7>row-1' scope="col" (click)=onCell(date)>
+                    {{date}}
+                </td>
+            </tbody>
         </tr>
     </table>
 </div>
