@@ -1,1 +1,8 @@
-<p>meeting-view works!</p>
+<div class="container container-fluid">
+
+    <table class="table table-bordered">
+        <tr *ngFor='let row of rows'>
+            <td *ngFor='let date of dates' scope="col" (click)=onCell(date)>{{date}}</td>
+        </tr>
+    </table>
+</div>
