@@ -1,0 +1,36 @@
+<div class="container container-fluid row margintop">
+    <div class="col-md-2"></div>
+  
+    <div class="col-md-4 offset-md-2">
+  
+      <form #loginForm="ngForm" (ngSubmit)='loginWithEmailPassword()'>
+        <div id="login">Login</div><br>
+  
+        <label for="email"></label>Email
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input class="form-control" pattern="[a-zA-Z0-4]{1,}@[a-zA-Z0-4]{1,}.[a-zA-Z0-4]{1,}" type="email" id="email"
+            placeholder="email" [(ngModel)]='email' name="email" required #emailId="ngModel">
+        </div>
+        <!-- error div for Email -->
+        <div [hidden]='emailId.valid || emailId.pristine' class="alert alert-danger">
+          Please provide correct email format
+        </div>
+  
+        <div class="form-group">
+          <label for="password"></label>Password
+          <input class="form-control" type="password" minlength="6" id="password" placeholder="password"
+            [(ngModel)]='password' name="password" required #pass="ngModel">
+        </div>
+        <!-- error div for password -->
+        <div [hidden]='pass.valid || pass.pristine' class="alert alert-danger">
+          Password minimum length should be 6
+        </div>
+        <!-- end of error div for password -->
+        <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary btn-small">Login</button>
+      </form><br>
+      <div>New User Register <a href="/signup">here</a></div>
+  
+    </div>
+  
+  </div>

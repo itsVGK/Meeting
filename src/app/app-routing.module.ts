@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MeetingViewComponent } from './meeting-view/meeting-view.component';
+import { LoginComponent } from './user/login/login.component';
+import { SignupComponent } from './user/signup/signup.component';
 
 
 const routes: Routes = [
-  {path:'meeting', component:MeetingViewComponent},
-  {path:'', redirectTo:'meeting', pathMatch:'full'}
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'meeting', component: MeetingViewComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({
