@@ -14,6 +14,7 @@ import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MeetingComponent } from './meeting/meeting.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     MeetingViewComponent,
     HeaderComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MeetingComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

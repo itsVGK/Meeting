@@ -25,8 +25,12 @@ export class LoginComponent implements OnInit {
       (result) => {
         if (result.status == 200) {
           this.toastr.success("User Logged In Successfully", "Great");
-          this.router.navigate(['meeting']);
           sessionStorage.setItem('userId', result.data.userId);
+          if (result.data.userName.startsWith('admin')) {
+            this.router.navigate(['meeting']);
+          } else {
+            this.router.navigate(['meeting', result.data.userId]);
+          }
         } else {
           this.toastr.error('Unable to Login', 'Sorry!!');
           this.router.navigate(['login']);
