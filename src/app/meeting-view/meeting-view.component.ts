@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { ActivatedRoute } from '@angular/router';
+import { MeetingServiceService } from '../service/meeting-service.service';
 
 const colors: any = {
   red: {
@@ -28,7 +29,8 @@ const colors: any = {
 })
 export class MeetingViewComponent implements OnInit {
 
-  public isAdmin: String;
+  public isAdmin: boolean = true;
+  public events: CalendarEvent[] = [];
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   view: CalendarView = CalendarView.Month;
@@ -40,74 +42,49 @@ export class MeetingViewComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil">ed</i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times">de</i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
+  // actions: CalendarEventAction[] = [
+  //   {
+  //     label: '<i class="fa fa-fw fa-pencil">ed</i>',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.handleEvent('Edited', event);
+  //     }
+  //   },
+  //   {
+  //     label: '<i class="fa fa-fw fa-times">de</i>',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.events = this.events.filter(iEvent => iEvent !== event);
+  //       this.handleEvent('Deleted', event);
+  //     }
+  //   }
+  // ];
 
   refresh: Subject<any> = new Subject();
 
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
-  ];
+  getAllEvent() {
+    this.meetingService.getAllEvents(sessionStorage.getItem('userId')).subscribe(
+      (result) => {
+        if (result.status == 200) {
+          for (let res of result.data) {
+            res.start = new Date(res.start)
+            res.end = new Date(res.end)
+          }
+          this.events = result.data;
+        } else {
+        }
+      }
+    );
+  }
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
-  constructor(private modal: NgbModal, private route: ActivatedRoute) {
-    
+  constructor(private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
+
   }
 
   ngOnInit() {
-    this.isAdmin = this.route.snapshot.data.isAdmin;
-    console.log(this.isAdmin)
+    this.getAllEvent();
+    // this.isAdmin = this.route.snapshot.data.isAdmin;
+    // console.log(this.isAdmin)
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -123,10 +100,6 @@ export class MeetingViewComponent implements OnInit {
       this.viewDate = date;
     }
   }
-  // dayClicked(event){
-  //   console.log(event)
-  // }
-
 
   eventTimesChanged({
     event,
@@ -152,25 +125,39 @@ export class MeetingViewComponent implements OnInit {
   }
 
   addEvent(): void {
+    let eve: any = {
+      title: '',
+      start: startOfDay(new Date()),
+      end: endOfDay(new Date()),
+      color: colors.red,
+      draggable: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+    }
     this.events = [
       ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
+      eve
+    ];
+    eve.createdBy = sessionStorage.getItem('userId')
+    this.meetingService.saveEvent(eve).subscribe(
+      (result) => {
+        if (result.status === 200) {
+          console.log('saved', result)
         }
       }
-    ];
+    );
   }
 
-  // deleteEvent(eventToDelete: CalendarEvent) {
-  //   this.events = this.events.filter(event => event !== eventToDelete);
-  // }
+  deleteEvent(eventToDelete: CalendarEvent): any {
+    this.events = this.events.filter(event => event !== eventToDelete);
+    this.meetingService.deleteEvent(eventToDelete).subscribe(
+      (data)=>{
+        console.log('meeting deleted successfully', data)
+      }
+    )
+  }
 
   setView(view: CalendarView) {
     this.view = view;
@@ -180,7 +167,4 @@ export class MeetingViewComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
-  // onCell(val){
-  //   console.log(val)
-  // }
 }
