@@ -21,7 +21,8 @@ export class MeetingServiceService {
       .set('draggable', eve.draggable)
       .set('rbstart', eve.resizable.beforeStart)
       .set('raend', eve.resizable.afterEnd)
-      .set('createdBy', eve.createdBy)
+      .set('createdBy', sessionStorage.getItem('userId'))
+      .set('meetingId', eve.meetingId)
     return this.http.post(`${this.url}/save`, params);
   }
 

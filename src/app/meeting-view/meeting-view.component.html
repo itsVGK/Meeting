@@ -46,6 +46,7 @@
                 <th>Secondary color</th>
                 <th>Starts at</th>
                 <th>Ends at</th>
+                <th>Save</th>
                 <th>Remove</th>
             </tr>
         </thead>
@@ -71,6 +72,11 @@
                         (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true"
                         [enableTime]="true" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
                 </td> -->
+                <td>
+                    <button class="btn btn-success" (click)="saveEvent(event)">
+                        Save
+                    </button>
+                </td>
                 <td>
                     <button class="btn btn-danger" (click)="deleteEvent(event)">
                         Delete

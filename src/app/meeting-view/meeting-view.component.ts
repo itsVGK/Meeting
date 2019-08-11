@@ -83,8 +83,7 @@ export class MeetingViewComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEvent();
-    // this.isAdmin = this.route.snapshot.data.isAdmin;
-    // console.log(this.isAdmin)
+    // this.isAdmin = (sessionStorage.getItem('isAdmin') === 'true' ? true : false)
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -140,23 +139,27 @@ export class MeetingViewComponent implements OnInit {
       ...this.events,
       eve
     ];
-    eve.createdBy = sessionStorage.getItem('userId')
-    this.meetingService.saveEvent(eve).subscribe(
+
+  }
+
+  deleteEvent(eventToDelete: CalendarEvent): any {
+    this.events = this.events.filter(event => event !== eventToDelete);
+    this.meetingService.deleteEvent(eventToDelete).subscribe(
+      (data) => {
+        console.log('meeting deleted successfully', data)
+      }
+    )
+  }
+
+  saveEvent(eventToSave: CalendarEvent): any {
+    console.log(eventToSave)
+    this.meetingService.saveEvent(eventToSave).subscribe(
       (result) => {
         if (result.status === 200) {
           console.log('saved', result)
         }
       }
     );
-  }
-
-  deleteEvent(eventToDelete: CalendarEvent): any {
-    this.events = this.events.filter(event => event !== eventToDelete);
-    this.meetingService.deleteEvent(eventToDelete).subscribe(
-      (data)=>{
-        console.log('meeting deleted successfully', data)
-      }
-    )
   }
 
   setView(view: CalendarView) {
