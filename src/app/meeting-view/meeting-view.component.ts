@@ -3,6 +3,7 @@ import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMo
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { ActivatedRoute } from '@angular/router';
 
 const colors: any = {
   red: {
@@ -27,8 +28,7 @@ const colors: any = {
 })
 export class MeetingViewComponent implements OnInit {
 
-  // public dates:Array<any>=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-  // public rows:Array<any>=[1,2,3];
+  public isAdmin: String;
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   view: CalendarView = CalendarView.Month;
@@ -101,11 +101,13 @@ export class MeetingViewComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) { }
-  // constructor() { }
-
+  constructor(private modal: NgbModal, private route: ActivatedRoute) {
+    
+  }
 
   ngOnInit() {
+    this.isAdmin = this.route.snapshot.data.isAdmin;
+    console.log(this.isAdmin)
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
   public email: String;
   public password: String;
   public mobile: String;
-
+  public userName: String;
   ngOnInit() {
   }
 
@@ -27,7 +27,8 @@ export class SignupComponent implements OnInit {
       'lastName': this.lastName,
       'email': this.email,
       'mobile': this.mobile,
-      'password': this.password
+      'password': this.password,
+      'userName': this.userName
     }
 
     this.userService.signupService(newUser).subscribe(

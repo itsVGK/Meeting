@@ -16,17 +16,20 @@ export class LoginComponent implements OnInit {
   public password: String;
 
   ngOnInit() {
+    if (sessionStorage.getItem('userId') != null)
+      this.router.navigate(['meeting'])
   }
 
   loginWithEmailPassword() {
     this.userAuthService.loginService(this.email, this.password).subscribe(
       (result) => {
-        if (result.status === 200) {
+        if (result.status == 200) {
           this.toastr.success("User Logged In Successfully", "Great");
           this.router.navigate(['meeting']);
+          sessionStorage.setItem('userId', result.data.userId);
         } else {
           this.toastr.error('Unable to Login', 'Sorry!!');
-          this.router.navigate(['signup']);
+          this.router.navigate(['login']);
         }
       }
     )

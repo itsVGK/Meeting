@@ -7,18 +7,23 @@
         <form #signupForm="ngForm" (ngSubmit)='signinWithEmailPassword()'>
             <div class="form-group">
                 <label for="efname"></label>First Name
-                <input class="form-control" type="text" id="efname" placeholder="first name" [(ngModel)]='efname'
+                <input class="form-control" type="text" id="efname" placeholder="first name" [(ngModel)]='firstName'
                     name="efname" required #efname1="ngModel">
             </div>
             <div class="form-group">
                 <label for="elname"></label>Last Name
-                <input class="form-control" type="text" id="elname" placeholder="last name" [(ngModel)]='elname'
+                <input class="form-control" type="text" id="elname" placeholder="last name" [(ngModel)]='lastName'
                     name="elname" required #elname1="ngModel">
             </div>
             <div class="form-group">
                 <label for="mob"></label>Mobile
-                <input class="form-control" type="number" id="mob" placeholder="mobile" [(ngModel)]='mob'
+                <input class="form-control" type="number" id="mob" placeholder="mobile" [(ngModel)]='mobile'
                     name="mob" required #mob1="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="uname"></label>User Name
+                <input class="form-control" type="text" id="uname" placeholder="user name" [(ngModel)]='userName'
+                    name="uname" required #uname1="ngModel">
             </div>
             <div class="form-group">
                 <label for="email"></label>Email
