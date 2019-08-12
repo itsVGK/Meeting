@@ -29,8 +29,9 @@ const colors: any = {
 })
 export class MeetingViewComponent implements OnInit {
 
-  public isAdmin: boolean = true;
+  public isAdmin: boolean = false;
   public events: CalendarEvent[] = [];
+  public userForMeeting: String;
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   view: CalendarView = CalendarView.Month;
@@ -60,8 +61,8 @@ export class MeetingViewComponent implements OnInit {
 
   refresh: Subject<any> = new Subject();
 
-  getAllEvent() {
-    this.meetingService.getAllEvents(sessionStorage.getItem('userId')).subscribe(
+  getAllEvent(userForMeet) {
+    this.meetingService.getAllEvents(userForMeet).subscribe(
       (result) => {
         if (result.status == 200) {
           for (let res of result.data) {
@@ -78,12 +79,13 @@ export class MeetingViewComponent implements OnInit {
   activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
-
+    this.userForMeeting = this.route.snapshot.paramMap.get('userId')
+    console.log(this.userForMeeting)
+    this.getAllEvent(this.userForMeeting);
   }
 
   ngOnInit() {
-    this.getAllEvent();
-    // this.isAdmin = (sessionStorage.getItem('isAdmin') === 'true' ? true : false)
+    this.isAdmin = (sessionStorage.getItem('isAdmin') === 'true' ? true : false)
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -153,7 +155,7 @@ export class MeetingViewComponent implements OnInit {
 
   saveEvent(eventToSave: CalendarEvent): any {
     console.log(eventToSave)
-    this.meetingService.saveEvent(eventToSave).subscribe(
+    this.meetingService.saveEvent(eventToSave, this.userForMeeting).subscribe(
       (result) => {
         if (result.status === 200) {
           console.log('saved', result)

@@ -10,9 +10,9 @@ export class MeetingServiceService {
 
   public url = `http://localhost:3000/api/v1/meet`;
 
-  saveEvent = (eve): any => {
+  saveEvent = (eve, userForMeet): any => {
     let params = new HttpParams()
-      .set('userId', sessionStorage.getItem('userId'))
+      .set('userId', userForMeet)
       .set('title', eve.title)
       .set('start', eve.start)
       .set('end', eve.end)

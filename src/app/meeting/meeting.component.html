@@ -1,1 +1,21 @@
-<p>meeting works!</p>
+<div class="conatiner container-fluid">
+    <table class="table table-responsivr table-boredered">
+        <thead>
+            <td>Title</td>
+            <td>User</td>
+            <td>start date</td>
+            <td>end date</td>
+            <td>created by</td>
+        </thead>
+        <tbody *ngFor='let user of userList' >
+            <td>{{user.userId}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.email}}</td>
+            <td>
+                <button type="submit" class="btn btn-small btn-success" (click)='gotoMeet(user)'>Go</button>
+            </td>
+        </tbody>
+    </table>
+</div>

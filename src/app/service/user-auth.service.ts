@@ -17,6 +17,7 @@ export class UserAuthService {
       .set('email', newUser.email)
       .set('password', newUser.password)
       .set('userName', newUser.userName)
+      .set('mobile', newUser.mobile)
     return this.http.post(`${this.url}/signup`, params);
   }
 
@@ -29,5 +30,9 @@ export class UserAuthService {
 
   public getSingleUser(userId): any {
     return this.http.get(`${this.url}/getSingleUser/${userId}`);
+  }
+
+  getAllUsersList = (): any => {
+    return this.http.get(`${this.url}/getAllUsers/forAdmin`);
   }
 }
