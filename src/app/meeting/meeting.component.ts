@@ -10,11 +10,13 @@ import { UserAuthService } from '../service/user-auth.service';
 })
 export class MeetingComponent implements OnInit {
 
+  public loggedUser: String = sessionStorage.getItem('userId')
   constructor(private meetingSerice: MeetingServiceService, private router: Router, private userService: UserAuthService) {
     this.getAllUsersList();
   }
 
   ngOnInit() {
+
   }
 
   public userList: any;

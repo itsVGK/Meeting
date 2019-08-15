@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MeetingComponent } from './meeting/meeting.component';
 
+import { FlatpickrModule } from 'angularx-flatpickr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +37,8 @@ import { MeetingComponent } from './meeting/meeting.component';
     }),
     NgbModalModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FlatpickrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

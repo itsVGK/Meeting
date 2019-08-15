@@ -80,7 +80,6 @@ export class MeetingViewComponent implements OnInit {
 
   constructor(private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
     this.userForMeeting = this.route.snapshot.paramMap.get('userId')
-    console.log(this.userForMeeting)
     this.getAllEvent(this.userForMeeting);
   }
 
@@ -100,6 +99,8 @@ export class MeetingViewComponent implements OnInit {
       }
       this.viewDate = date;
     }
+    console.log(this.events)
+    console.log(this.viewDate)
   }
 
   eventTimesChanged({

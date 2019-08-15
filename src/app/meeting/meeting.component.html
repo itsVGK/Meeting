@@ -1,11 +1,11 @@
-<div class="conatiner container-fluid">
-    <table class="table table-responsivr table-boredered">
+<div class="container container-fluid table-responsive">
+    <table class="table table-boredered">
         <thead>
-            <td>Title</td>
-            <td>User</td>
-            <td>start date</td>
-            <td>end date</td>
-            <td>created by</td>
+            <td>userId</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>UserName</td>
+            <td>Email</td>
         </thead>
         <tbody *ngFor='let user of userList' >
             <td>{{user.userId}}</td>
