@@ -34,4 +34,8 @@ export class MeetingServiceService {
     return this.http.delete(`${this.url}/delete/meet/${event.meetingId}`)
   }
 
+  sendMail = () => {
+    return this.http.get(`${this.url}/sendMail`)
+  }
+
 }

@@ -159,7 +159,8 @@ export class MeetingViewComponent implements OnInit {
     this.meetingService.saveEvent(eventToSave, this.userForMeeting).subscribe(
       (result) => {
         if (result.status === 200) {
-          console.log('saved', result)
+          console.log('saved- sending mail ', result)
+          this.meetingService.sendMail()
         }
       }
     );
