@@ -6,6 +6,7 @@ import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, Cal
 import { ActivatedRoute } from '@angular/router';
 import { MeetingServiceService } from '../service/meeting-service.service';
 import { all } from 'q';
+import { ToastrService } from 'ngx-toastr';
 
 const colors: any = {
   red: {
@@ -63,7 +64,7 @@ export class MeetingViewComponent implements OnInit {
 
   activeDayIsOpen: boolean = false;
 
-  constructor(private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
+  constructor(private toastr: ToastrService, private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
     this.userForMeeting = this.route.snapshot.paramMap.get('userId')
   }
 
@@ -111,7 +112,7 @@ export class MeetingViewComponent implements OnInit {
 
   addEvent(): void {
     let eve: any = {
-      title: '',
+      title: 'default',
       start: startOfDay(new Date()),
       end: endOfDay(new Date()),
       color: colors.red,
@@ -125,14 +126,14 @@ export class MeetingViewComponent implements OnInit {
       ...this.events,
       eve
     ];
-
+    console.log(this.events)
   }
 
   deleteEvent(eventToDelete: CalendarEvent): any {
     this.events = this.events.filter(event => event !== eventToDelete);
     this.meetingService.deleteEvent(eventToDelete).subscribe(
       (data) => {
-        console.log('meeting deleted successfully', data)
+        this.toastr.success('Meeting deleted successfully', 'Ok')
       }
     )
   }
@@ -143,6 +144,7 @@ export class MeetingViewComponent implements OnInit {
       (result) => {
         if (result.status === 200) {
           console.log('saved- sending mail ', result)
+          this.getAllEvent(this.userForMeeting);
           this.meetingService.sendMail()
         }
       }
