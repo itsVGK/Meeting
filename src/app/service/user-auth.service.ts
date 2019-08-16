@@ -6,7 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 })
 export class UserAuthService {
 
-  public url = `http://api.shakeit.live/api/v1/users`;
+  public url = `http://localhost:3000/api/v1/users`;
+  // public url = `http://api.shakeit.live/api/v1/users`;
 
   constructor(private http: HttpClient) { }
 

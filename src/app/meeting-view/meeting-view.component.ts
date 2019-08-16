@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { ActivatedRoute } from '@angular/router';
 import { MeetingServiceService } from '../service/meeting-service.service';
+import { all } from 'q';
 
 const colors: any = {
   red: {
@@ -43,26 +44,11 @@ export class MeetingViewComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  // actions: CalendarEventAction[] = [
-  //   {
-  //     label: '<i class="fa fa-fw fa-pencil">ed</i>',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.handleEvent('Edited', event);
-  //     }
-  //   },
-  //   {
-  //     label: '<i class="fa fa-fw fa-times">de</i>',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.events = this.events.filter(iEvent => iEvent !== event);
-  //       this.handleEvent('Deleted', event);
-  //     }
-  //   }
-  // ];
-
   refresh: Subject<any> = new Subject();
 
-  getAllEvent(userForMeet) {
-    this.meetingService.getAllEvents(userForMeet).subscribe(
+  async getAllEvent(userForMeet) {
+    let allEvents = await this.meetingService.getAllEvents(userForMeet);
+    allEvents.subscribe(
       (result) => {
         if (result.status == 200) {
           for (let res of result.data) {
@@ -70,21 +56,20 @@ export class MeetingViewComponent implements OnInit {
             res.end = new Date(res.end)
           }
           this.events = result.data;
-        } else {
         }
       }
-    );
+    )
   }
 
   activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal, private route: ActivatedRoute, private meetingService: MeetingServiceService) {
     this.userForMeeting = this.route.snapshot.paramMap.get('userId')
-    this.getAllEvent(this.userForMeeting);
   }
 
   ngOnInit() {
     this.isAdmin = (sessionStorage.getItem('isAdmin') === 'true' ? true : false)
+    this.getAllEvent(this.userForMeeting);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -99,8 +84,6 @@ export class MeetingViewComponent implements OnInit {
       }
       this.viewDate = date;
     }
-    console.log(this.events)
-    console.log(this.viewDate)
   }
 
   eventTimesChanged({

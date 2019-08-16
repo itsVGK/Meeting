@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { CalendarEvent } from 'calendar-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ export class MeetingServiceService {
 
   constructor(private http: HttpClient) { }
 
-  public url = `http://api.shakeit.live/api/v1/meet`;
+  public url = `http://localhost:3000/api/v1/meet`;
+  // public url = `http://api.shakeit.live/api/v1/meet`;
 
   saveEvent = (eve, userForMeet): any => {
     let params = new HttpParams()

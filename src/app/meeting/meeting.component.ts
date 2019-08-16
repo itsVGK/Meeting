@@ -24,7 +24,6 @@ export class MeetingComponent implements OnInit {
   getAllUsersList() {
     this.userService.getAllUsersList().subscribe(
       (result) => {
-        console.log(result)
         this.userList = result.data
       }
     )
