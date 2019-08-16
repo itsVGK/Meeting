@@ -57,6 +57,10 @@ export class MeetingViewComponent implements OnInit {
             res.end = new Date(res.end)
           }
           this.events = result.data;
+          this.toastr.success(`Click on the date to view the meeting details`, 'Retrieved')
+        }
+        else {
+          this.toastr.error(`${result.message}`, 'Oops!')
         }
       }
     )
@@ -126,7 +130,6 @@ export class MeetingViewComponent implements OnInit {
       ...this.events,
       eve
     ];
-    console.log(this.events)
   }
 
   deleteEvent(eventToDelete: CalendarEvent): any {
@@ -139,12 +142,10 @@ export class MeetingViewComponent implements OnInit {
   }
 
   saveEvent(eventToSave: CalendarEvent): any {
-    console.log(eventToSave)
     this.meetingService.saveEvent(eventToSave, this.userForMeeting).subscribe(
       (result) => {
         if (result.status === 200) {
-          console.log('saved- sending mail ', result)
-          this.getAllEvent(this.userForMeeting);
+          this.toastr.success(`${result.message}`, 'Hurrah')
           this.meetingService.sendMail()
         }
       }
